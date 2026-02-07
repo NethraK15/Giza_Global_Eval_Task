@@ -1,0 +1,17 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+.git
+.gitignore
+venv
+.venv
+node_modules
+frontend
+worker
+models
+tests
+dist
+build
+
