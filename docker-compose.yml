@@ -45,6 +45,7 @@ services:
       - minio
     volumes:
       - ./models:/models
+      - ./worker:/worker
 
   frontend:
     build: ./frontend

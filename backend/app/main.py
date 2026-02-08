@@ -30,9 +30,13 @@ app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(jobs_router, prefix="/api")
 
 
+from app.logger import setup_logger
+
+logger = setup_logger("backend-main", "backend")
+
 @app.on_event("startup")
 def startup_event():
-    print("Startup: Initializing mock user...")
+    logger.info("Startup: Initializing mock user...")
     try:
         from app.database import SessionLocal
         from app.models import User
@@ -42,7 +46,7 @@ def startup_event():
         db = SessionLocal()
         mock_user = db.query(User).filter(User.id == uuid.UUID(MOCK_USER_ID)).first()
         if not mock_user:
-            print(f"Startup: Creating mock user {MOCK_USER_ID}")
+            logger.info(f"Startup: Creating mock user {MOCK_USER_ID}", extra={"user_id": MOCK_USER_ID})
             mock_user = User(
                 id=uuid.UUID(MOCK_USER_ID),
                 email="test@example.com",
@@ -51,11 +55,11 @@ def startup_event():
             db.add(mock_user)
             db.commit()
         db.close()
-        print("Startup: Mock user initialization complete.")
+        logger.info("Startup: Mock user initialization complete.")
     except Exception as e:
-        print(f"Startup Error (User): {e}")
+        logger.error(f"Startup Error (User): {e}")
 
-    print("Startup: Initializing MinIO bucket...")
+    logger.info("Startup: Initializing MinIO bucket...")
     try:
         from minio import Minio
         import os
@@ -67,11 +71,11 @@ def startup_event():
         )
         bucket = os.getenv("MINIO_BUCKET")
         if not minio_client.bucket_exists(bucket):
-            print(f"Startup: Creating bucket {bucket}")
+            logger.info(f"Startup: Creating bucket {bucket}")
             minio_client.make_bucket(bucket)
-        print("Startup: MinIO initialization complete.")
+        logger.info("Startup: MinIO initialization complete.")
     except Exception as e:
-        print(f"Startup Error (MinIO): {e}")
+        logger.error(f"Startup Error (MinIO): {e}")
 
 
 

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
+import { useNavigate } from "react-router-dom";
 
 export default function Jobs() {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     const fetchJobs = async () => {
         try {
@@ -109,6 +112,19 @@ export default function Jobs() {
                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                                     {new Date(job.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </div>
+                                <button
+                                    onClick={() => navigate(`/jobs/${job.id}`)}
+                                    style={{
+                                        background: 'none',
+                                        border: 'none',
+                                        color: 'var(--primary)',
+                                        cursor: 'pointer',
+                                        fontWeight: '600',
+                                        fontSize: '0.875rem'
+                                    }}
+                                >
+                                    View Details →
+                                </button>
                             </div>
                         </div>
                     ))}

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Upload from "./pages/Upload";
 import Jobs from "./pages/Jobs";
+import JobDetail from "./pages/JobDetail";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
@@ -38,6 +39,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Upload />} />
                   <Route path="/jobs" element={<Jobs />} />
+                  <Route path="/jobs/:jobId" element={<JobDetail />} />
                 </Routes>
               </div>
             </ProtectedRoute>

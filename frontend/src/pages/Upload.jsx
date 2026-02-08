@@ -34,7 +34,7 @@ export default function Upload() {
 
             const res = await api.post("/api/jobs", formData);
             console.log("Job created:", res.data);
-            navigate("/jobs");
+            navigate(`/jobs/${res.data.job_id}`);
         } catch (err) {
             setError(err.response?.data?.detail || "Upload failed. Please try again.");
         } finally {
