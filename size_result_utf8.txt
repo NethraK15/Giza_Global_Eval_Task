@@ -1,0 +1,8 @@
+﻿Uploading size_test.png (1.83 MB)...
+Waiting for job to succeed...
+----------------------------------------
+Observed Sizes for 1 Sample Job:
+Input:      1923510 bytes (1.83 MB)
+Overlay:    1923510 bytes (1.83 MB)
+CSV:             30 bytes (0.03 KB)
+----------------------------------------
