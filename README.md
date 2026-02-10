@@ -39,6 +39,35 @@ All services will be available at:
 - **Backend API:** [http://localhost:8000](http://localhost:8000)
 - **MinIO Console:** [http://localhost:9001](http://localhost:9001)
 
+### 🛑 Shutting Down Docker
+
+To stop the services and clean up resources, use the following commands:
+
+- **Stop all services:**
+  ```bash
+  docker compose stop
+  ```
+- **Stop and remove containers, networks, and images:**
+  ```bash
+  docker compose down
+  ```
+- **Complete cleanup (including data volumes/database):**
+  ```bash
+  docker compose down -v
+  ```
+
+---
+
+### 🌐 Ngrok Tunnel Setup
+
+The application is also accessible via ngrok for external access or testing:
+- **Public URL:** [https://uncharmable-nonvexatiously-leonie.ngrok-free.dev](https://uncharmable-nonvexatiously-leonie.ngrok-free.dev)
+
+To start the tunnel manually for the frontend:
+```bash
+ngrok http 5173 --host-header=rewrite
+```
+
 ---
 
 ### 💻 Manual Setup (Local Development)
@@ -89,15 +118,46 @@ Use these credentials to log in to the application:
 
 ## 🧪 Testing
 
-To run the backend tests:
+The project includes a comprehensive suite of integration, end-to-end, and performance tests.
+
+### 1. Backend Integration Tests
+Validates API endpoints, authentication, and job processing flows.
 ```bash
-pytest tests/
+pytest tests/test_backend.py
 ```
 
-To run performance tests:
+### 2. Frontend E2E Tests (Playwright)
+Automated browser tests covering the full user journey from signup to image processing results.
 ```bash
-python tests/performance_test.py
+# Ensure containers are running first
+pytest tests/test_frontend.py
 ```
+
+### 3. Performance & Load Testing
+Measures system throughput, latency (p50/p95), and worker utilization.
+```bash
+# Enqueue 100 jobs for testing
+python tests/load_test_enqueue.py
+
+# Calculate metrics from logs
+# (Refer to PERFORMANCE_TESTING.md for detailed steps)
+python tests/calculate_metrics.py
+```
+
+For a detailed test execution report, see `TEST_REPORT.md`.
+
+---
+
+## 📊 Capacity & Scaling
+
+The system is designed to handle high loads efficiently. Based on current benchmarks:
+
+- **Peak Capacity:** ~0.35 Jobs/sec with a single worker.
+- **Worker Utilization:** A single worker instance can handle 1,000 daily jobs at ~45% utilization.
+- **Storage Consumption:** ~3.66 MB per job (including original image, overlay, and CSV).
+- **Scale-out Threshold:** Recommended to add a second worker instance once DAU exceeds 1,500.
+
+For detailed calculations and rationale, see `CAPACITY_REPORT.md`.
 
 ## 📁 Project Structure
 
